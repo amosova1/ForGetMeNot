@@ -36,6 +36,8 @@ if (process.env.STATUS === 'production') {
     app.set('trust proxy', 1); // trust first proxy
 }
 
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(
     session({
         secret: process.env.SESSION_SECRET || 'dev-secret',
