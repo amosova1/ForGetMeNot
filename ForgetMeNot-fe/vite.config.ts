@@ -20,5 +20,10 @@ export default defineConfig({
       },
     },
   },
+  base: './', // use relative paths
+  build: {
+    outDir: 'dist',
+  },
   plugins: [tailwindcss(), reactRouter(), tsconfigPaths()],
 });
+
