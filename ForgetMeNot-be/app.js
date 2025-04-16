@@ -37,6 +37,8 @@ if (process.env.STATUS === 'production') {
 }
 
 app.use(express.static(path.join(__dirname, 'public')));
+app.use("/assets", express.static(path.join(buildPath, "client/assets")));
+
 
 app.use(
     session({
