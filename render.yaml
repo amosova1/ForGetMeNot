@@ -1,0 +1,27 @@
+# Exported from Render on 2025-04-16T11:04:41Z
+services:
+- type: web
+  name: ForGetMeNot-be
+  runtime: node
+  repo: https://github.com/amosova1/ForGetMeNot
+  plan: free
+  envVars:
+  - key: SESSION_SECRET
+    sync: false
+  - key: DB_USER
+    sync: false
+  - key: DB_PORT
+    sync: false
+  - key: DB_PASS
+    sync: false
+  - key: DB_HOST
+    sync: false
+  - key: DB_NAME
+    sync: false
+  - key: STATUS
+    sync: false
+  region: frankfurt
+  buildCommand: npm install
+  startCommand: npm start
+  rootDir: ForgetMeNot-be
+version: "1"
