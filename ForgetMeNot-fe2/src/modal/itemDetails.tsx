@@ -148,6 +148,7 @@ const ItemDetailsPage: React.FC<ItemDetailsPageProps> = ({username, data}) => {
             if (response.ok) {
                 const result = await response.json();
                 console.log('Data saved successfully:', result);
+                window.location.reload();
             } else {
                 console.error('Failed to save data:', response.status);
             }

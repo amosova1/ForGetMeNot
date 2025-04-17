@@ -52,7 +52,7 @@ userItemsRouter.post('/', async function (req, res) {
 
         let itemAccount = null;
 
-        if (id === null) {
+        if (id === null || id === undefined) {
             itemAccount = await ItemAccount.findOne({
                 where: {
                     item_id: item.item_id,
