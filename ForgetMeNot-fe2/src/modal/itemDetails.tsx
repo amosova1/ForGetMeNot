@@ -260,6 +260,16 @@ const ItemDetailsPage: React.FC<ItemDetailsPageProps> = ({username, data}) => {
                             </div>
                         ))}
                     </div>
+
+                    <div>
+                        Rok:
+                        <input
+                            className="p-2 mt-1 w-full sm:w-auto"
+                            type="text"
+                            placeholder={year || "Enter Rok"}
+                            onChange={(e) => setYear(e.target.value)}
+                        />
+                    </div>
                 </div>
 
                 <div className="flex flex-col items-center w-full sm:w-auto">
