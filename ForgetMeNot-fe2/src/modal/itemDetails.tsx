@@ -71,15 +71,12 @@ const ItemDetailsPage: React.FC<ItemDetailsPageProps> = ({username, data}) => {
         );
     };
 
-    const filteredSuggestions = filteredTag.filter(suggestion =>
-        String(suggestion).toLowerCase().includes(tag.toLowerCase()) && !tags.includes(suggestion)
-    );
     const handleAddTag = () => {
         const trimmed = tag.trim();
         if (trimmed && !tags.includes(trimmed)) {
             setTags([...tags, trimmed]);
         }
-        setTag("");
+        // setTag("");
     };
     const handleRemoveTag = (removeTag: string) => {
         setTags(tags.filter(t => t !== removeTag));
@@ -242,6 +239,7 @@ const ItemDetailsPage: React.FC<ItemDetailsPageProps> = ({username, data}) => {
                             ) {
                                 setFilteredTag((prev) => [...prev, newSuggestion]);
                                 setTag(newSuggestion);
+                                handleAddTag()
                             }
                         }}
                     />

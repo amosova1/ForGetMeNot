@@ -9,7 +9,7 @@ type Props = {
     children: React.ReactNode;
 };
 
-export default function Layout({ currentPage, setCurrentPage, children }: Props) {
+export default function Layout({ setCurrentPage, children }: Props) {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [showLoginModal, setShowLoginModal] = useState(false);
     const [showRegisterModal, setShowRegisterModal] = useState(false);

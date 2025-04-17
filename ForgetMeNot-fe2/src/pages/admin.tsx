@@ -1,13 +1,6 @@
 import {useEffect, useState} from 'react';
+import {Helmet} from 'react-helmet';
 import {Table} from '../components/Table';
-import type {Route} from './+types/home';
-
-export function meta({}: Route.MetaArgs) {
-    return [
-        {title: 'New React Router App'},
-        {name: 'description', content: 'admin'},
-    ];
-}
 
 async function getAccounts() {
     try {
@@ -182,8 +175,6 @@ export default function AdminPage() {
                     method: 'DELETE',
                 });
 
-                const accountResult = await accountResponse.json();
-
                 if (accountResponse.ok) {
                     console.log('Account deleted saved');
                 } else {
@@ -246,7 +237,7 @@ export default function AdminPage() {
                         if (sectionResponse.ok) {
                             console.log('Section update saved');
                         } else {
-                            console.log('Failed to save section update');
+                            console.error('Failed to save section update:', sectionResult?.message || sectionResult);
                         }
                         break;
 
@@ -264,7 +255,7 @@ export default function AdminPage() {
                         if (tagResponse.ok) {
                             console.log('Tag update saved');
                         } else {
-                            console.log('Failed to save tag update');
+                            console.log('Failed to save tag update', tagResult?.message || tagResult);
                         }
                         break;
 
@@ -301,7 +292,7 @@ export default function AdminPage() {
                             if (accountResponse.ok) {
                                 console.log('Account update saved');
                             } else {
-                                console.log('Failed to save account update');
+                                console.log('Failed to save account update', accountResult?.message || accountResult);
                             }
                             break;
                         }
@@ -319,7 +310,7 @@ export default function AdminPage() {
                             if (accountResponse.ok) {
                                 console.log('User update saved');
                             } else {
-                                console.log('Failed to save user update');
+                                console.log('Failed to save user update', accountResult?.message || accountResult);
                             }
                             break;
                         }
@@ -451,7 +442,7 @@ export default function AdminPage() {
             <span>
                 <button
                     onClick={() => handleEdit(item, 'item')}
-                        className={'px-4 py-2 bg-[var(--green)] text-white rounded-md hover:bg-[var(--green-hover)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-300'}
+                    className={'px-4 py-2 bg-[var(--green)] text-white rounded-md hover:bg-[var(--green-hover)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-300'}
                 >
                     Edit
                 </button>
@@ -538,74 +529,77 @@ export default function AdminPage() {
 
 
     return (
-        <div className={'p-6 space-y-8'}>
-            <div className={'flex space-x-4 border-b pb-4'}>
-                <button
-                    onClick={() => handleTabClick('accounts')}
-                    className={`px-4 py-2 text-lg font-semibold ${activeTab === 'accounts' ? 'border-b-2 border--600' : ''}`}
-                >
-                    Manage Accounts
-                </button>
-                <button
-                    onClick={() => handleTabClick('tags')}
-                    className={`px-4 py-2 text-lg font-semibold ${activeTab === 'tags' ? 'border-b-2 border--600' : ''}`}
-                >
-                    Manage Tags
-                </button>
-                <button
-                    onClick={() => handleTabClick('sections')}
-                    className={`px-4 py-2 text-lg font-semibold ${activeTab === 'sections' ? 'border-b-2 border--600' : ''}`}
-                >
-                    Manage Sections
-                </button>
-                <button
-                    onClick={() => handleTabClick('items')}
-                    className={`px-4 py-2 text-lg font-semibold ${activeTab === 'items' ? 'border-b-2 border--600' : ''}`}
-                >
-                    Manage Items
-                </button>
-                <button
-                    onClick={() => handleTabClick('userItems')}
-                    className={`px-4 py-2 text-lg font-semibold ${activeTab === 'userItems' ? 'border-b-2 border--600' : ''}`}
-                >
-                    Manage Users Items
-                </button>
+        <>
+            <Helmet/>
+            <div className={'p-6 space-y-8'}>
+                <div className={'flex space-x-4 border-b pb-4'}>
+                    <button
+                        onClick={() => handleTabClick('accounts')}
+                        className={`px-4 py-2 text-lg font-semibold ${activeTab === 'accounts' ? 'border-b-2 border--600' : ''}`}
+                    >
+                        Manage Accounts
+                    </button>
+                    <button
+                        onClick={() => handleTabClick('tags')}
+                        className={`px-4 py-2 text-lg font-semibold ${activeTab === 'tags' ? 'border-b-2 border--600' : ''}`}
+                    >
+                        Manage Tags
+                    </button>
+                    <button
+                        onClick={() => handleTabClick('sections')}
+                        className={`px-4 py-2 text-lg font-semibold ${activeTab === 'sections' ? 'border-b-2 border--600' : ''}`}
+                    >
+                        Manage Sections
+                    </button>
+                    <button
+                        onClick={() => handleTabClick('items')}
+                        className={`px-4 py-2 text-lg font-semibold ${activeTab === 'items' ? 'border-b-2 border--600' : ''}`}
+                    >
+                        Manage Items
+                    </button>
+                    <button
+                        onClick={() => handleTabClick('userItems')}
+                        className={`px-4 py-2 text-lg font-semibold ${activeTab === 'userItems' ? 'border-b-2 border--600' : ''}`}
+                    >
+                        Manage Users Items
+                    </button>
+                </div>
+
+                <div className='mt-6'>
+                    {activeTab === 'accounts' && (
+                        <div className={'bg-white shadow-md rounded-lg overflow-hidden'}>
+                            <Table data={transformedAccountData} columns={accountColumns}/>
+                        </div>
+                    )}
+
+                    {activeTab === 'tags' && (
+                        <div className={'bg-white shadow-md rounded-lg overflow-hidden'}>
+                            <Table data={transformedTagsData} columns={tagColumns}/>
+                        </div>
+                    )}
+
+                    {activeTab === 'sections' && (
+                        <div className={'bg-white shadow-md rounded-lg overflow-hidden'}>
+                            <Table data={transformedSectionsData} columns={sectionColumns}/>
+                        </div>
+                    )}
+
+                    {activeTab === 'items' && (
+                        <div className={'bg-white shadow-md rounded-lg overflow-hidden'}>
+                            <Table data={transformedItemsData} columns={itemColumns}/>
+                        </div>
+                    )}
+
+                    {activeTab === 'userItems' && (
+                        <div className={'bg-white shadow-md rounded-lg overflow-hidden'}>
+                            <Table data={transformedUserItemsData} columns={userItemColumns}/>
+                        </div>
+                    )}
+                </div>
+
+                <br/>
+                {renderEditForm()}
             </div>
-
-            <div className='mt-6'>
-                {activeTab === 'accounts' && (
-                    <div className={'bg-white shadow-md rounded-lg overflow-hidden'}>
-                        <Table data={transformedAccountData} columns={accountColumns}/>
-                    </div>
-                )}
-
-                {activeTab === 'tags' && (
-                    <div className={'bg-white shadow-md rounded-lg overflow-hidden'}>
-                        <Table data={transformedTagsData} columns={tagColumns}/>
-                    </div>
-                )}
-
-                {activeTab === 'sections' && (
-                    <div className={'bg-white shadow-md rounded-lg overflow-hidden'}>
-                        <Table data={transformedSectionsData} columns={sectionColumns}/>
-                    </div>
-                )}
-
-                {activeTab === 'items' && (
-                    <div className={'bg-white shadow-md rounded-lg overflow-hidden'}>
-                        <Table data={transformedItemsData} columns={itemColumns}/>
-                    </div>
-                )}
-
-                {activeTab === 'userItems' && (
-                    <div className={'bg-white shadow-md rounded-lg overflow-hidden'}>
-                        <Table data={transformedUserItemsData} columns={userItemColumns}/>
-                    </div>
-                )}
-            </div>
-
-            <br/>
-            {renderEditForm()}
-        </div>
+        </>
     );
 }

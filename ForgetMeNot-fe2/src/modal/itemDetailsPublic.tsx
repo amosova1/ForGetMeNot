@@ -1,5 +1,5 @@
 import {Modal} from "./modal.tsx";
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {Slider} from "../components/Slider.tsx";
 
 interface ItemDetailsPageProps {
@@ -8,23 +8,23 @@ interface ItemDetailsPageProps {
 
 const ItemDetailsPublicPage: React.FC<ItemDetailsPageProps> = ({data}) => {
     console.log('here', data);
-    const [storyValue, setStoryValue] = useState<number>(data.story_rating);
-    const [visualValue, setVisualValue] = useState<number>(data.scenery_rating);
-    const [endingValue, setEndingValue] = useState<number>(data.ending_rating);
-    const [ratingValue, setRatingValue] = useState((storyValue + visualValue + endingValue) / 3);
-    const [selectedCategory, setSelectedCategory] = useState<"knihy" | "filmy">(data.type);
-    const [title, setTitle] = useState<string>(data.title);
-    const [author, setAuthor] = useState<string>(data.author);
-    const [link, setLink] = useState<string>(data.link);
-    const [section, setSection] = useState<string>(data.section);
-    const [notes, setNotes] = useState<string>(data.notes);
-    const [favouriteParts, setFavouriteParts] = useState<string>(data.favourite_parts);
-    const [lastChapter, setLastChapter] = useState<string>(data.last_chapter);
-    const [lastMinute, setLastMinute] = useState<string>(data.last_minute);
-    const [done, setDone] = useState(data.done);
+    const [storyValue] = useState<number>(data.story_rating);
+    const [visualValue] = useState<number>(data.scenery_rating);
+    const [endingValue] = useState<number>(data.ending_rating);
+    const [ratingValue] = useState((storyValue + visualValue + endingValue) / 3);
+    const [selectedCategory] = useState<"knihy" | "filmy">(data.type);
+    const [title] = useState<string>(data.title);
+    const [author] = useState<string>(data.author);
+    const [link] = useState<string>(data.link);
+    const [section] = useState<string>(data.section);
+    const [notes] = useState<string>(data.notes);
+    const [favouriteParts] = useState<string>(data.favourite_parts);
+    const [lastChapter] = useState<string>(data.last_chapter);
+    const [lastMinute] = useState<string>(data.last_minute);
+    const [done] = useState(data.done);
     // const [tag, setTag] = useState<string>(data.tag);
-    const [tags, setTags] = useState<string[]>(data.tags);
-    const [year, setYear] = useState<string>(data.year);
+    const [tags] = useState<string[]>(data.tags);
+    const [year] = useState<string>(data.year);
 
     return (
         <div className="w-[50vw] h-[70vh] overflow-y-auto

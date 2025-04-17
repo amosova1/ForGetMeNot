@@ -139,6 +139,9 @@ const LoginPage = ({setIsLoggedIn, setUsername, onClose}: {
                 <button type="submit" className="submit-btn">
                     Prihlásiť
                 </button>
+
+                {loading && <>loading</>}
+                {errorMessage}
             </form>
         </div>
     );
