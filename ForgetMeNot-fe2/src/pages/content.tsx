@@ -132,6 +132,30 @@ export default function Content() {
 
     const closeItem = () => {
         setSelectedItem(null);
+
+        getSections().then((data) => {
+            setSectionsList(data);
+            setFilteredSections(data);
+        });
+
+        const savedUsername = localStorage.getItem('username');
+        if (savedUsername) {
+            setUsername(savedUsername);
+        }
+        console.log(username, ' hej ', savedUsername);
+
+        if (savedUsername != null) {
+            getItems(savedUsername).then((data) => {
+                setUserItems(data.items);
+                setFilteredItems(data.items);
+            });
+        }
+
+        getTags().then((data) => {
+            setTagsList(data);
+        });
+
+        console.log('tags', tagsList)
     }
 
     const filterItemsAll = () => {

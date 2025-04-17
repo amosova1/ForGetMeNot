@@ -5,9 +5,10 @@ import {Slider} from "../components/Slider.tsx";
 interface ItemDetailsPageProps {
     username: string,
     data: any;
+    onClose: () => void,
 }
 
-const ItemDetailsPage: React.FC<ItemDetailsPageProps> = ({username, data}) => {
+const ItemDetailsPage: React.FC<ItemDetailsPageProps> = ({username, data, onClose}) => {
     const [filteredSections, setFilteredSections] = useState<any[]>([]);
     const [filteredTag, setFilteredTag] = useState<string[]>([]);
 
@@ -30,6 +31,7 @@ const ItemDetailsPage: React.FC<ItemDetailsPageProps> = ({username, data}) => {
     const [year, setYear] = useState<string>();
     const [id, setId] = useState<number>();
     const [publicItem, setPublicItem] = useState<boolean>(false);
+
     // const [highlightedIndex, setHighlightedIndex] = useState<number>(-1);
 
     useEffect(() => {
@@ -104,7 +106,6 @@ const ItemDetailsPage: React.FC<ItemDetailsPageProps> = ({username, data}) => {
             console.error("Error deleting item:", error);
         }
     };
-
     const handleSave = async () => {
         const data = {
             id,
@@ -148,7 +149,7 @@ const ItemDetailsPage: React.FC<ItemDetailsPageProps> = ({username, data}) => {
             if (response.ok) {
                 const result = await response.json();
                 console.log('Data saved successfully:', result);
-                window.location.href = window.location.href;
+                onClose()
             } else {
                 console.error('Failed to save data:', response.status);
             }
@@ -381,7 +382,7 @@ export const ItemDetails = ({username, data, isOpen, onClose}: {
 
     return (
         <Modal onClose={onClose}>
-            <ItemDetailsPage username={username} data={data}/>
+            <ItemDetailsPage username={username} data={data} onClose={onClose}/>
         </Modal>
     );
 };
