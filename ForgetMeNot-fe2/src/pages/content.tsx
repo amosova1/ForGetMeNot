@@ -50,6 +50,7 @@ async function getItems(username: string) {
         headers: {
             'Content-Type': 'application/json',
         },
+        // credentials: 'include',
     });
 
     if (getResponse.ok) {
@@ -82,18 +83,18 @@ export default function Content() {
             setFilteredSections(data);
         });
 
-        const savedUsername = localStorage.getItem('username');
-        if (savedUsername) {
-            setUsername(savedUsername);
-        }
-        console.log(username, ' hej ', savedUsername);
-
-        if (savedUsername != null) {
-            getItems(savedUsername).then((data) => {
-                setUserItems(data.items);
-                setFilteredItems(data.items);
-            });
-        }
+        // const savedUsername = localStorage.getItem('username');
+        // if (savedUsername) {
+        //     setUsername(savedUsername);
+        // }
+        // console.log(username, ' hej ', savedUsername);
+        //
+        // if (savedUsername != null) {
+        //     getItems(savedUsername).then((data) => {
+        //         setUserItems(data.items);
+        //         setFilteredItems(data.items);
+        //     });
+        // }
 
         getTags().then((data) => {
             setTagsList(data);
@@ -101,6 +102,29 @@ export default function Content() {
 
         console.log('tags', tagsList)
     }, []);
+
+    useEffect(() => {
+        fetch('/api/login', {
+            credentials: 'include',
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log("data ", data)
+                if (data.loggedIn) {
+                    setUsername(data.username);
+                }
+            });
+    }, []);
+
+    useEffect(() => {
+        if (username) {
+            console.log("Fetching items for:", username);
+            getItems(username).then((data) => {
+                setUserItems(data.items);
+                setFilteredItems(data.items);
+            });
+        }
+    }, [username]);
 
     useEffect(() => {
         if (filteredAuthor === '') {

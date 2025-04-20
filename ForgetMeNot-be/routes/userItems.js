@@ -145,14 +145,18 @@ userItemsRouter.get('/', async (req, res) => {
         // console.log('get');
 
         let itemAccounts = null;
-        if (username !== 'admin') {
+        if (username === 'admin') {
+            itemAccounts = await ItemAccount.findAll({attributes: {exclude: ['createdAt', 'updatedAt']}});
+        } else if (username === 'public') {
+            itemAccounts = await ItemAccount.findAll(
+                {
+                    where: { public: true },
+                    attributes: {exclude: ['createdAt', 'updatedAt']}});
+        } else {
             itemAccounts = await ItemAccount.findAll({
                 where: {account_id: account.account_id},
                 attributes: {exclude: ['createdAt', 'updatedAt']}
-            });
-        } else {
-            itemAccounts = await ItemAccount.findAll({attributes: {exclude: ['createdAt', 'updatedAt']}});
-        }
+            });        }
 
         // console.log('here', itemAccounts.length, itemAccounts);
 

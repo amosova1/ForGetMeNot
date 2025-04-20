@@ -1,8 +1,11 @@
 var express = require('express');
 const { sequelize, connectDB } = require("./sequelize");
 const cors = require('cors');
-
-const User = require("./models/user");
+var pool = require('./config/db.js');
+const session = require('express-session');
+const PgSession = require("connect-pg-simple")(session);
+const config = require('./config/config.js');
+const cookieName = config.session.cookieName;
 
 var path = require('path');
 var cookieParser = require('cookie-parser');
@@ -29,7 +32,6 @@ connectDB();
 //     .catch(err => console.error("Error creating tables:", err));
 //
 
-const session = require('express-session');
 require('dotenv').config();
 
 if (process.env.STATUS === 'production') {
@@ -38,9 +40,14 @@ if (process.env.STATUS === 'production') {
 
 app.use(
     session({
+        store: new PgSession({
+            pool,
+            tableName: "session",
+        }),
         secret: process.env.SESSION_SECRET || 'dev-secret',
         resave: false,
         saveUninitialized: false,
+        name: cookieName,
         cookie: {
             secure: process.env.STATUS === 'production', // send only over HTTPS
             httpOnly: true, // JS can't access cookie
@@ -57,9 +64,11 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
 
-// app.use(cors({
-//     origin: 'http://localhost:5173',
-// }));
+app.use(
+    cors({
+        credentials: true, // <-- Dôležité pre cookies
+    })
+);
 
 // const PORT = 3000;
 //

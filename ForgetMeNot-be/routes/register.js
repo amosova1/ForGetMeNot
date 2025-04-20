@@ -15,12 +15,21 @@ registerRouter.post('/', async function (req, res) {
   }
 
   try {
+    const existingAccount = await Account.findOne({ where: { username } });
+    if (existingAccount) {
+      return res.status(409).json({ message: 'Username already taken' });
+    }
+
     let user = await User.findOne({ where: { first_name: firstname, last_name: lastname } });
     console.log(user);
 
     if (!user) {
       user = await User.create({ first_name: firstname, last_name: lastname });
       console.log('created user ', user);
+    }
+
+    if (typeof password !== 'string') {
+      return res.status(400).json({ message: 'Password must be a string' });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -31,6 +40,10 @@ registerRouter.post('/', async function (req, res) {
       password: hashedPassword,
     });
 
+    req.session.user = {
+      username: username,
+      isAdmin: account.is_admin,
+    };
 
     res.status(201).json({
       message: 'Registration successful',

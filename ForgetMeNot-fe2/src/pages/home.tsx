@@ -63,7 +63,7 @@ export default function Home() {
             setFilteredSections(data);
         });
 
-        getItems('admin').then((data) => {
+        getItems('public').then((data) => {
             setUserItems(data.items);
             setFilteredItems(data.items);
         });

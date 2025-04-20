@@ -93,6 +93,7 @@ const ItemDetailsPage: React.FC<ItemDetailsPageProps> = ({username, data, onClos
         try {
             const response = await fetch(`/api/userItems?itemId=${itemId}`, {
                 method: "DELETE",
+                credentials: "include",
             });
 
             if (!response.ok) {
@@ -130,7 +131,7 @@ const ItemDetailsPage: React.FC<ItemDetailsPageProps> = ({username, data, onClos
 
         console.log(id)
 
-        if (!title || !author) {
+        if (!title || !author || !year) {
             console.log('Title or author not set:');
             return;
         }
@@ -143,6 +144,7 @@ const ItemDetailsPage: React.FC<ItemDetailsPageProps> = ({username, data, onClos
                 headers: {
                     'Content-Type': 'application/json',
                 },
+                credentials: 'include',
                 body: JSON.stringify(data),
             });
 
@@ -194,7 +196,7 @@ const ItemDetailsPage: React.FC<ItemDetailsPageProps> = ({username, data, onClos
                     <div>
                         Názov:
                         <input
-                            className="p-2 mt-1 w-full sm:w-auto"
+                            className={`p-2 mt-1 w-full sm:w-auto ${!title ? 'border rounded-md border-red-500 focus:border-red-500': ''}`}
                             type="text"
                             placeholder="Enter Názov"
                             value={title}
@@ -204,7 +206,7 @@ const ItemDetailsPage: React.FC<ItemDetailsPageProps> = ({username, data, onClos
                         <div>Autor:</div>) : (
                         <div>Réžia:</div>)}
                     <input
-                        className="p-2 mt-1 w-full sm:w-auto"
+                        className={`p-2 mt-1 w-full sm:w-auto ${!author ? 'border rounded-md border-red-500 focus:border-red-500': ''}`}
                         type="text"
                         placeholder="Enter Autor"
                         value={author}
@@ -266,7 +268,7 @@ const ItemDetailsPage: React.FC<ItemDetailsPageProps> = ({username, data, onClos
                     <div>
                         Rok:
                         <input
-                            className="p-2 mt-1 w-full sm:w-auto"
+                            className={`p-2 mt-1 w-full sm:w-auto ${!year ? 'border rounded-md border-red-500 focus:border-red-500': ''}`}
                             type="text"
                             placeholder={year || "Enter Rok"}
                             onChange={(e) => setYear(e.target.value)}

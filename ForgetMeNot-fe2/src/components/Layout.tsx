@@ -19,15 +19,27 @@ export default function Layout({ setCurrentPage, children }: Props) {
         return localStorage.getItem("theme") === "dark";
     });
 
-    useEffect(() => {
-        const savedUsername = localStorage.getItem("username");
-        if (savedUsername) {
-            setUsername(savedUsername);
-            setIsLoggedIn(true);
-        }
+    // useEffect(() => {
+    //     const savedUsername = localStorage.getItem("username");
+    //     if (savedUsername) {
+    //         setUsername(savedUsername);
+    //         setIsLoggedIn(true);
+    //     }
+    //
+    //     const savedIsAdmin = localStorage.getItem("isAdmin");
+    //     if (savedIsAdmin === "true") setIsAdmin(true);
+    // }, []);
 
-        const savedIsAdmin = localStorage.getItem("isAdmin");
-        if (savedIsAdmin === "true") setIsAdmin(true);
+    useEffect(() => {
+        fetch('/api/login', {
+            credentials: 'include',
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.loggedIn) {
+                    handleSetUsername(data.username, data.isAdmin);
+                }
+            });
     }, []);
 
     useEffect(() => {
@@ -38,9 +50,20 @@ export default function Layout({ setCurrentPage, children }: Props) {
     const handleSetUsername = (name: string, admin: boolean) => {
         setUsername(name);
         setIsAdmin(admin);
-        localStorage.setItem("username", name);
-        localStorage.setItem("isAdmin", String(admin));
+        // localStorage.setItem("username", name);
+        // localStorage.setItem("isAdmin", String(admin));
         setIsLoggedIn(true);
+    };
+
+    const handleLogout = () => {
+        fetch('/api/logout', {
+            method: 'POST',
+            credentials: 'include',
+        }).then(() => {
+            setIsLoggedIn(false);
+            setUsername('');
+            setIsAdmin(false);
+        });
     };
 
     return (
@@ -51,7 +74,7 @@ export default function Layout({ setCurrentPage, children }: Props) {
                         <button className="btn" onClick={() => setCurrentPage("home")}>Domov</button>
                         <button className="btn" onClick={() => setCurrentPage("about")}>O nás</button>
                         {isLoggedIn && !isAdmin && (
-                            <button className="btn" onClick={() => setCurrentPage("content")}>Content</button>
+                            <button className="btn" onClick={() => setCurrentPage("content")}>Moje</button>
                         )}
                         {isLoggedIn && isAdmin && (
                             <button className="btn" onClick={() => setCurrentPage("admin")}>Admin</button>
@@ -77,11 +100,12 @@ export default function Layout({ setCurrentPage, children }: Props) {
                                 <button
                                     className="btn"
                                     onClick={() => {
-                                        setIsLoggedIn(false);
-                                        setUsername("");
-                                        setIsAdmin(false);
-                                        localStorage.setItem("username", "");
-                                        localStorage.setItem("isAdmin", "false");
+                                        handleLogout()
+                                        // setIsLoggedIn(false);
+                                        // setUsername("");
+                                        // setIsAdmin(false);
+                                        // localStorage.setItem("username", "");
+                                        // localStorage.setItem("isAdmin", "false");
                                     }}
                                 >
                                     Odhlásenie
