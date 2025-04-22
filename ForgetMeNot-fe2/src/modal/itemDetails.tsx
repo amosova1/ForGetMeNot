@@ -2,6 +2,8 @@ import React, {useEffect, useState} from "react";
 import {Modal} from "./modal.tsx";
 import SearchBar from "../components/Searchbar.tsx";
 import {Slider} from "../components/Slider.tsx";
+import bookIcon from '../assets/book-icon.svg';
+
 interface ItemDetailsPageProps {
     username: string,
     data: any;
@@ -306,7 +308,7 @@ const ItemDetailsPage: React.FC<ItemDetailsPageProps> = ({username, data, onClos
                         </div>
                     </div>
 
-                    <img className="w-[15vw] rounded-xl mt-3 mb-3" alt="sdf" src="../assets/book-icon.svg"/>
+                    <img className="w-[15vw] rounded-xl mt-3 mb-3" alt="sdf" src={bookIcon}/>
                 </div>
             </div>
 

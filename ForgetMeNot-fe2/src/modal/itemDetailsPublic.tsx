@@ -1,6 +1,7 @@
 import {Modal} from "./modal.tsx";
 import React, {useState} from "react";
 import {Slider} from "../components/Slider.tsx";
+import bookIcon from '../assets/book-icon.svg';
 
 interface ItemDetailsPageProps {
     data: any;
@@ -118,7 +119,7 @@ const ItemDetailsPublicPage: React.FC<ItemDetailsPageProps> = ({data}) => {
                         </div>
                     </div>
 
-                    <img className="w-[15vw] rounded-xl mt-3 mb-3" alt="sdf" src="../assets/book-icon.svg"/>
+                    <img className="w-[15vw] rounded-xl mt-3 mb-3" alt="sdf" src={bookIcon}/>
                 </div>
             </div>
 
