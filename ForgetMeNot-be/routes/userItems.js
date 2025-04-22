@@ -182,9 +182,21 @@ userItemsRouter.get('/', async (req, res) => {
                 itemAccounts[i].dataValues.year = item.year;
                 itemAccounts[i].dataValues.type = item.type;
                 itemAccounts[i].dataValues.author = item.author;
-                itemAccounts[i].dataValues.section = section.section_name;
-                itemAccounts[i].dataValues.tags = tags;
-                itemAccounts[i].dataValues.username = account.username;
+                if (section) {
+                    itemAccounts[i].dataValues.section = section.section_name;
+                } else {
+                    itemAccounts[i].dataValues.section = "";
+                }
+                if (tags) {
+                    itemAccounts[i].dataValues.tags = tags;
+                } else {
+                    itemAccounts[i].dataValues.tags = [];
+                }
+                if (account) {
+                    itemAccounts[i].dataValues.username = account.username;
+                } else {
+                    itemAccounts[i].dataValues.username = "";
+                }
             }
 
             // console.log('After update:', itemAccounts);
