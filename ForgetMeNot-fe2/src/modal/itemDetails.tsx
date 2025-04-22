@@ -28,7 +28,7 @@ const ItemDetailsPage: React.FC<ItemDetailsPageProps> = ({username, data, onClos
     const [lastChapter, setLastChapter] = useState<string>("");
     const [lastMinute, setLastMinute] = useState<string>("");
     const [done, setDone] = useState(false);
-    const [tag, setTag] = useState<string>("");
+    // const [tag, setTag] = useState<string>("");
     const [tags, setTags] = useState<string[]>([]);
     const [year, setYear] = useState<string>();
     const [id, setId] = useState<number>();
@@ -76,13 +76,13 @@ const ItemDetailsPage: React.FC<ItemDetailsPageProps> = ({username, data, onClos
         );
     };
 
-    const handleAddTag = () => {
-        const trimmed = tag.trim();
-        if (trimmed && !tags.includes(trimmed)) {
-            setTags([...tags, trimmed]);
-        }
-        // setTag("");
-    };
+    // const handleAddTag = () => {
+    //     const trimmed = tag.trim();
+    //     if (trimmed && !tags.includes(trimmed)) {
+    //         setTags([...tags, trimmed]);
+    //     }
+    //     // setTag("");
+    // };
     const handleRemoveTag = (removeTag: string) => {
         setTags(tags.filter(t => t !== removeTag));
     };
@@ -247,8 +247,7 @@ const ItemDetailsPage: React.FC<ItemDetailsPageProps> = ({username, data, onClos
                                 !tags.includes(newSuggestion)
                             ) {
                                 setFilteredTag((prev) => [...prev, newSuggestion]);
-                                setTag(newSuggestion);
-                                handleAddTag()
+                                setTags(prev => [...prev, newSuggestion]);
                             }
                         }}
                     />
