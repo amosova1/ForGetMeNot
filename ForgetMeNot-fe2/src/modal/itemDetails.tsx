@@ -16,7 +16,7 @@ const ItemDetailsPage: React.FC<ItemDetailsPageProps> = ({username, data, onClos
     const [visualValue, setVisualValue] = useState<number>(0);
     const [endingValue, setEndingValue] = useState<number>(0);
     const [ratingValue, setRatingValue] = useState((storyValue + visualValue + endingValue) / 3);
-    const [selectedCategory, setSelectedCategory] = useState<"knihy" | "filmy">("knihy");
+    const [selectedCategory, setSelectedCategory] = useState<"Kniha" | "Film">("Kniha");
     const [title, setTitle] = useState<string>("");
     const [author, setAuthor] = useState<string>("");
     const [link, setLink] = useState<string>("");
@@ -35,6 +35,7 @@ const ItemDetailsPage: React.FC<ItemDetailsPageProps> = ({username, data, onClos
     // const [highlightedIndex, setHighlightedIndex] = useState<number>(-1);
 
     useEffect(() => {
+        console.log(data)
         if (data) {
             setId(data.id)
             setTitle(data.title || "");
@@ -49,7 +50,7 @@ const ItemDetailsPage: React.FC<ItemDetailsPageProps> = ({username, data, onClos
             setTags(data.tags || []);
             setYear(data.year || "");
             setPublicItem(data.public || false);
-            setSelectedCategory(data.selected_category || "knihy");
+            setSelectedCategory(data.type || "Kniha");
             setStoryValue(data.story_rating || 0);
             setVisualValue(data.scenery_rating || 0);
             setEndingValue(data.ending_rating || 0);
@@ -160,6 +161,8 @@ const ItemDetailsPage: React.FC<ItemDetailsPageProps> = ({username, data, onClos
         }
     };
 
+    console.log(selectedCategory)
+
     return (
         <div className="w-[50vw] h-[70vh] overflow-y-auto
             [&::-webkit-scrollbar]:w-2
@@ -172,18 +175,18 @@ const ItemDetailsPage: React.FC<ItemDetailsPageProps> = ({username, data, onClos
         >
             <div className="flex gap-1 mb-5">
                 <button
-                    className={`btn btn--special ${selectedCategory === "knihy" ? "btn--focus" : ""}`}
+                    className={`btn btn--special ${selectedCategory === "Kniha" ? "btn--focus" : ""}`}
                     onClick={() => {
-                        setSelectedCategory("knihy");
+                        setSelectedCategory("Kniha");
                         filterSections("Kniha");
                     }}
                 >
                     Knihy
                 </button>
                 <button
-                    className={`btn btn--special ${selectedCategory === "filmy" ? "btn--focus" : ""}`}
+                    className={`btn btn--special ${selectedCategory === "Film" ? "btn--focus" : ""}`}
                     onClick={() => {
-                        setSelectedCategory("filmy");
+                        setSelectedCategory("Film");
                         filterSections("Film");
                     }}
                 >
@@ -202,7 +205,7 @@ const ItemDetailsPage: React.FC<ItemDetailsPageProps> = ({username, data, onClos
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
                         /></div>
-                    {selectedCategory === "knihy" ? (
+                    {selectedCategory === "Kniha" ? (
                         <div>Autor:</div>) : (
                         <div>Réžia:</div>)}
                     <input
@@ -278,7 +281,7 @@ const ItemDetailsPage: React.FC<ItemDetailsPageProps> = ({username, data, onClos
 
                 <div className="flex flex-col items-center w-full sm:w-auto">
                     <div className="flex flex-col gap-2 mb-5">
-                        {selectedCategory === "knihy" ? (
+                        {selectedCategory === "Kniha" ? (
                             <div>Dočítané:</div>
                         ) : (
                             <div>Dopozerané:</div>
@@ -308,7 +311,7 @@ const ItemDetailsPage: React.FC<ItemDetailsPageProps> = ({username, data, onClos
             </div>
 
             <div className="flex flex-col gap-3 mb-5">
-                {selectedCategory === "knihy" ? (
+                {selectedCategory === "Kniha" ? (
                     <div>
                         Posledná kapitola:
                         <input
@@ -352,7 +355,7 @@ const ItemDetailsPage: React.FC<ItemDetailsPageProps> = ({username, data, onClos
 
             <div className="w-[70%] mb-3">
                 <Slider min={0} max={5} step={1} value={storyValue} onChange={setStoryValue} label={"Dej"}/>
-                {selectedCategory === "knihy" ? (
+                {selectedCategory === "Kniha" ? (
                     <Slider min={0} max={5} step={1} value={visualValue} onChange={setVisualValue}
                             label={"Ilustrácia"}/>
                 ) : (

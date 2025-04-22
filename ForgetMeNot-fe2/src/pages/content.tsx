@@ -189,12 +189,12 @@ export default function Content() {
     const filterItemsBooks = () => {
         setFilteredSections(sectionsList.filter(section => section.section_type === "Kniha"));
         console.log(userItems);
-        setFilteredItems(userItems.filter(item => item.type === "knihy"));
+        setFilteredItems(userItems.filter(item => item.type === "Knihy"));
     }
 
     const filterItemsFilms = () => {
         setFilteredSections(sectionsList.filter(section => section.section_type === "Film"));
-        setFilteredItems(userItems.filter(item => item.type === "filmy"));
+        setFilteredItems(userItems.filter(item => item.type === "Film"));
     }
 
     return (

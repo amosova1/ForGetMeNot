@@ -104,12 +104,12 @@ export default function Home() {
     }
     const filterItemsBooks = () => {
         setFilteredSections(sectionsList.filter(section => section.section_type === "Kniha"));
-        setFilteredItems(userItems.filter(item => item.type === "knihy"));
+        setFilteredItems(userItems.filter(item => item.type === "Knihy"));
     }
 
     const filterItemsFilms = () => {
         setFilteredSections(sectionsList.filter(section => section.section_type === "Film"));
-        setFilteredItems(userItems.filter(item => item.type === "filmy"));
+        setFilteredItems(userItems.filter(item => item.type === "Film"));
     }
 
     return (

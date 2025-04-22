@@ -12,7 +12,7 @@ const ItemDetailsPublicPage: React.FC<ItemDetailsPageProps> = ({data}) => {
     const [visualValue] = useState<number>(data.scenery_rating);
     const [endingValue] = useState<number>(data.ending_rating);
     const [ratingValue] = useState((storyValue + visualValue + endingValue) / 3);
-    const [selectedCategory] = useState<"knihy" | "filmy">(data.type);
+    const [selectedCategory] = useState<"Kniha" | "Film">(data.type);
     const [title] = useState<string>(data.title);
     const [author] = useState<string>(data.author);
     const [link] = useState<string>(data.link);
@@ -38,12 +38,12 @@ const ItemDetailsPublicPage: React.FC<ItemDetailsPageProps> = ({data}) => {
         >
             <div className="flex gap-1 mb-5">
                 <button
-                    className={`btn btn--special ${selectedCategory === "knihy" ? "btn--focus" : ""}`}
+                    className={`btn btn--special ${selectedCategory === "Kniha" ? "btn--focus" : ""}`}
                 >
                     Knihy
                 </button>
                 <button
-                    className={`btn btn--special ${selectedCategory === "filmy" ? "btn--focus" : ""}`}
+                    className={`btn btn--special ${selectedCategory === "Film" ? "btn--focus" : ""}`}
                 >
                     Filmy a seriály
                 </button>
@@ -52,7 +52,7 @@ const ItemDetailsPublicPage: React.FC<ItemDetailsPageProps> = ({data}) => {
             <div className="grid grid-cols-3 justify-between mb-3">
                 <div className="flex flex-col w-full gap-6 sm:w-auto">
                     <div> Názov: {title}</div>
-                    {selectedCategory === "knihy" ? (
+                    {selectedCategory === "Kniha" ? (
                         <div>Autor: </div>) : (
                         <div>Réžia: </div>)} {author}
                     <div>
@@ -95,7 +95,7 @@ const ItemDetailsPublicPage: React.FC<ItemDetailsPageProps> = ({data}) => {
 
                 <div className="flex flex-col items-center w-full sm:w-auto">
                     <div className="flex flex-col gap-2 mb-5">
-                        {selectedCategory === "knihy" ? (
+                        {selectedCategory === "Kniha" ? (
                             <div>Dočítané:</div>
                         ) : (
                             <div>Dopozerané:</div>
@@ -123,7 +123,7 @@ const ItemDetailsPublicPage: React.FC<ItemDetailsPageProps> = ({data}) => {
             </div>
 
             <div className="flex flex-col gap-3 mb-5">
-                {selectedCategory === "knihy" ? (
+                {selectedCategory === "Kniha" ? (
                     <div>
                         Posledná kapitola: {lastChapter}
                     </div>) : (
@@ -143,7 +143,7 @@ const ItemDetailsPublicPage: React.FC<ItemDetailsPageProps> = ({data}) => {
 
             <div className="w-[70%] mb-3">
                 <Slider min={0} max={5} step={1} value={storyValue} label={"Dej"} disabled/>
-                {selectedCategory === "knihy" ? (
+                {selectedCategory === "Kniha" ? (
                     <Slider min={0} max={5} step={1} value={visualValue}
                             label={"Ilustrácia"} disabled/>
                 ) : (

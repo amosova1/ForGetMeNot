@@ -23,6 +23,7 @@ const ItemAccount = sequelize.define(
             type: DataTypes.UUID,
             defaultValue: DataTypes.UUIDV4,
             foreignKey: true,
+            allowNull: true,
         },
         link: {
             type: DataTypes.STRING,

@@ -42,12 +42,16 @@ userItemsRouter.post('/', async function (req, res) {
             console.log('created item ', item);
         }
 
-        let sectionItem = await Section.findOne({where: {section_name: section, section_type: selectedCategory}});
-        console.log(sectionItem);
+        let sectionItem = null;
+        console.log("section------------------------------", section, section.length)
+        if (section.length !== 0) {
+            sectionItem = await Section.findOne({where: {section_name: section, section_type: selectedCategory}});
+            console.log(sectionItem);
 
-        if (!sectionItem) {
-            sectionItem = await Section.create({section_name: section, section_type: selectedCategory});
-            console.log('created section ', sectionItem);
+            if (!sectionItem) {
+                sectionItem = await Section.create({section_name: section, section_type: selectedCategory});
+                console.log('created section ', sectionItem);
+            }
         }
 
         let itemAccount = null;
@@ -68,7 +72,7 @@ userItemsRouter.post('/', async function (req, res) {
             itemAccount = await ItemAccount.create({
                 item_id: item.item_id,
                 account_id: account.account_id,
-                section_id: sectionItem.section_id,
+                section_id: sectionItem?.section_id || null,
                 link: link,
                 last_minute: lastMinute,
                 last_chapter: lastChapter,
@@ -81,10 +85,10 @@ userItemsRouter.post('/', async function (req, res) {
                 public: publicItem,
             });
         } else {
-            console.log("UPDATEWEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE", sectionItem.section_name, sectionItem.section_id)
+            console.log("UPDATEWEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE", sectionItem?.section_name, sectionItem?.section_id)
             itemAccount = await itemAccount.update({
                 item_id: item.item_id,
-                section_id: sectionItem.section_id,
+                section_id: sectionItem?.section_id || null,
                 link: link,
                 last_minute: lastMinute,
                 last_chapter: lastChapter,
