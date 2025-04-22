@@ -306,7 +306,7 @@ const ItemDetailsPage: React.FC<ItemDetailsPageProps> = ({username, data, onClos
                         </div>
                     </div>
 
-                    <img className="w-[15vw] rounded-xl mt-3 mb-3" alt="sdf" src="src/assets/book-icon.svg"/>
+                    <img className="w-[15vw] rounded-xl mt-3 mb-3" alt="sdf" src="../book-icon.svg"/>
                 </div>
             </div>
 
