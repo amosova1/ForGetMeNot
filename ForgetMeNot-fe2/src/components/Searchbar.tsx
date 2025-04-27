@@ -12,7 +12,7 @@ export default function SearchBar({setSuggestions, placeholder, url}: SearchBarP
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
     const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const input = e.target.value;
+        const input = e.target.value.trim();
         setQuery(input);
 
         if (input.length > 0) {
@@ -48,6 +48,15 @@ export default function SearchBar({setSuggestions, placeholder, url}: SearchBarP
         }
     };
 
+    const handleEnter = (selectedItem: string) => {
+        console.log(selectedItem)
+        if (setSuggestions != null) {
+            setSuggestions(selectedItem.trim());
+            setQuery(selectedItem.trim());
+            setIsOpen(false);
+        }
+    };
+
     return (
         <div className="relative">
             <div className="flex items-center pl-5 pr-5 pt-2 pb-2 bg-[var(--clr-surface-a20)] rounded-full">
@@ -57,6 +66,12 @@ export default function SearchBar({setSuggestions, placeholder, url}: SearchBarP
                     placeholder={placeholder || "Search..."}
                     value={query}
                     onChange={handleChange}
+                    onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                            console.log("Enter key pressed with query:", query, e.target);
+                            handleEnter(query)
+                        }
+                    }}
                 />
                 <span className="flex">
                     <svg
