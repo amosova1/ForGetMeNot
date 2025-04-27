@@ -19,7 +19,7 @@ module.exports = {
       },
       section_id: {
         type: Sequelize.UUID,
-        allowNull: false,
+        allowNull: true,
       },
       link: {
         type: Sequelize.STRING,
@@ -60,6 +60,10 @@ module.exports = {
       public: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
+      },
+      image: {
+        type: Sequelize.STRING,
+        allowNull: true,
       },
       createdAt: {
         type: Sequelize.DATE,

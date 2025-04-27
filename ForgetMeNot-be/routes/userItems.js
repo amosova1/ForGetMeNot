@@ -26,7 +26,8 @@ userItemsRouter.post('/', async function (req, res) {
         storyValue,
         visualValue,
         endingValue,
-        publicItem
+        publicItem,
+        imageFile
     } = req.body;
 
     try {
@@ -83,6 +84,7 @@ userItemsRouter.post('/', async function (req, res) {
                 scenery_rating: visualValue,
                 ending_rating: endingValue,
                 public: publicItem,
+                image: imageFile,
             });
         } else {
             console.log("UPDATEWEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE", sectionItem?.section_name, sectionItem?.section_id)
@@ -99,6 +101,7 @@ userItemsRouter.post('/', async function (req, res) {
                 scenery_rating: visualValue,
                 ending_rating: endingValue,
                 public: publicItem,
+                image: imageFile,
             });
         }
 

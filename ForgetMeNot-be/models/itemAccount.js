@@ -65,6 +65,10 @@ const ItemAccount = sequelize.define(
             type: DataTypes.BOOLEAN,
             allowNull: false,
         },
+        image: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
     },
     {
         tableName: "ItemAccount",
