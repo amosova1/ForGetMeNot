@@ -1,15 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Page } from '../App.tsx';
 import { Login } from '../modal/login.tsx';
 import { Register } from '../modal/register.tsx';
+import {useNavigate} from "react-router-dom";
 
-type Props = {
-    currentPage: Page;
-    setCurrentPage: (page: Page) => void;
-    children: React.ReactNode;
-};
-
-export default function Layout({ setCurrentPage, children }: Props) {
+export default function Layout({ children }: { children: React.ReactNode }) {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [showLoginModal, setShowLoginModal] = useState(false);
     const [showRegisterModal, setShowRegisterModal] = useState(false);
@@ -18,6 +12,7 @@ export default function Layout({ setCurrentPage, children }: Props) {
     const [isDarkMode, setIsDarkMode] = useState(() => {
         return localStorage.getItem("theme") === "dark";
     });
+    const navigate = useNavigate();
 
     // useEffect(() => {
     //     const savedUsername = localStorage.getItem("username");
@@ -50,9 +45,13 @@ export default function Layout({ setCurrentPage, children }: Props) {
     const handleSetUsername = (name: string, admin: boolean) => {
         setUsername(name);
         setIsAdmin(admin);
-        // localStorage.setItem("username", name);
-        // localStorage.setItem("isAdmin", String(admin));
         setIsLoggedIn(true);
+
+        if (admin) {
+            navigate("/admin")
+        } else {
+            navigate("/content");
+        }
     };
 
     const handleLogout = () => {
@@ -71,13 +70,13 @@ export default function Layout({ setCurrentPage, children }: Props) {
             <header>
                 <nav className="flex justify-between m-3 items-center">
                     <div className="flex gap-2">
-                        <button className="btn" onClick={() => setCurrentPage("home")}>Domov</button>
-                        <button className="btn" onClick={() => setCurrentPage("about")}>O nás</button>
+                        <button className="btn" onClick={() => navigate("/")}>Domov</button>
+                        <button className="btn" onClick={() => navigate("/about")}>O nás</button>
                         {isLoggedIn && !isAdmin && (
-                            <button className="btn" onClick={() => setCurrentPage("content")}>Moje</button>
+                            <button className="btn" onClick={() => navigate("/content")}>Moje</button>
                         )}
                         {isLoggedIn && isAdmin && (
-                            <button className="btn" onClick={() => setCurrentPage("admin")}>Admin</button>
+                            <button className="btn" onClick={() => navigate("/admin")}>Admin</button>
                         )}
                     </div>
 
@@ -101,11 +100,7 @@ export default function Layout({ setCurrentPage, children }: Props) {
                                     className="btn"
                                     onClick={() => {
                                         handleLogout()
-                                        // setIsLoggedIn(false);
-                                        // setUsername("");
-                                        // setIsAdmin(false);
-                                        // localStorage.setItem("username", "");
-                                        // localStorage.setItem("isAdmin", "false");
+                                        navigate("/")
                                     }}
                                 >
                                     Odhlásenie

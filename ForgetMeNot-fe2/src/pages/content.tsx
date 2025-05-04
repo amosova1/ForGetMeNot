@@ -281,7 +281,7 @@ export default function Content() {
                             username={username}
                             data={selectedItem}
                             isOpen={true}
-                            onClose={() => closeItem()}
+                            onClose={() => {closeItem(); window.location.href = "/content";}}
                         />
                     )}
                 </div>

@@ -1,32 +1,27 @@
-import {useState} from "react";
+import {
+    BrowserRouter as Router,
+    Routes,
+    Route,
+} from "react-router-dom";
+
 import Layout from './components/Layout.tsx';
 import Home from './pages/home';
-import About from "./pages/about";
-import Content from "./pages/content";
-import Admin from "./pages/admin";
-
-export type Page = "home" | "about" | "content" | "admin";
+import About from './pages/about';
+import Content from './pages/content';
+import Admin from './pages/admin';
 
 function App() {
-    const [currentPage, setCurrentPage] = useState<Page>("home");
-
-    const renderPage = () => {
-        switch (currentPage) {
-            case "about":
-                return <About/>;
-            case "content":
-                return <Content/>;
-            case "admin":
-                return <Admin/>;
-            default:
-                return <Home/>;
-        }
-    };
-
     return (
-        <Layout currentPage={currentPage} setCurrentPage={setCurrentPage}>
-            {renderPage()}
-        </Layout>
+        <Router>
+            <Layout>
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/about" element={<About />} />
+                    <Route path="/content" element={<Content />} />
+                    <Route path="/admin" element={<Admin />} />
+                </Routes>
+            </Layout>
+        </Router>
     );
 }
 

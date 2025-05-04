@@ -347,6 +347,7 @@ export default function AdminPage() {
 
             setEditRecord(null);
             setEditingType(null);
+            window.location.href = "/admin"
         }
     };
 
