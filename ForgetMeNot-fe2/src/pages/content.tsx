@@ -69,22 +69,6 @@ async function getItems(username: string) {
 export default function Content() {
     const navigate = useNavigate();
 
-    useEffect(() => {
-        fetch('/api/login', {
-            credentials: 'include',
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                console.log(data);
-                if (data.loggedIn && !data.isAdmin) {
-                    console.log('ok');
-                } else {
-                    navigate('/');
-                }
-            });
-    }, []);
-
-
     const [selectedItem, setSelectedItem] = useState<any | null>(null);
     const [sectionsList, setSectionsList] = useState<{ name: string; section_type: string }[]>([]);
     const [tagsList, setTagsList] = useState<string[]>([]);
@@ -116,8 +100,10 @@ export default function Content() {
             .then(res => res.json())
             .then(data => {
                 console.log("data ", data)
-                if (data.loggedIn) {
+                if (data.loggedIn && !data.isAdmin) {
                     setUsername(data.username);
+                } else {
+                    navigate('/');
                 }
             });
     }, []);
@@ -287,7 +273,10 @@ export default function Content() {
                             username={username}
                             data={selectedItem}
                             isOpen={true}
-                            onClose={() => {closeItem(); window.location.href = "/content";}}
+                            onClose={() => {
+                                closeItem();
+                                navigate('/content');
+                            }}
                         />
                     )}
                 </div>
