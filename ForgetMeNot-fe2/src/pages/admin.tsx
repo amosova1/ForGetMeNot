@@ -501,9 +501,7 @@ export default function AdminPage() {
     const renderEditForm = () => {
         if (!editRecord || !editingType) return null;
 
-        let formFields = [];
-
-        formFields = Object.keys(editRecord).map((key) => ({
+        let formFields = Object.keys(editRecord).map((key) => ({
             label: key.replace(/_/g, ' ').toUpperCase(),
             oldValue: prevRecord[key],
             newValue: editRecord[key],
