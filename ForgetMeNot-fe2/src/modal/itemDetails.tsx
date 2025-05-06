@@ -2,8 +2,10 @@ import React, {useEffect, useState} from "react";
 import {Modal} from "./modal.tsx";
 import SearchBar from "../components/Searchbar.tsx";
 import {Slider} from "../components/Slider.tsx";
-import ImageUploader from "../components/ImageUploader.tsx";
-import { deflate } from 'pako';
+// import ImageUploader from "../components/ImageUploader.tsx";
+import bookIcon from '../assets/book-icon.svg';
+
+// import { deflate } from 'pako';
 
 interface ItemDetailsPageProps {
     username: string,
@@ -34,7 +36,7 @@ const ItemDetailsPage: React.FC<ItemDetailsPageProps> = ({username, data, onClos
     const [year, setYear] = useState<string>();
     const [id, setId] = useState<number>();
     const [publicItem, setPublicItem] = useState<boolean>(false);
-    const [image, setImage] = useState<File | null>(null);
+    // const [image, setImage] = useState<File | null>(null);
 
     // const [highlightedIndex, setHighlightedIndex] = useState<number>(-1);
 
@@ -58,7 +60,7 @@ const ItemDetailsPage: React.FC<ItemDetailsPageProps> = ({username, data, onClos
             setStoryValue(data.story_rating || 0);
             setVisualValue(data.scenery_rating || 0);
             setEndingValue(data.ending_rating || 0);
-            setImage(data.image || null)
+            // setImage(data.image || null)
         }
     }, [data]);
 
@@ -108,21 +110,21 @@ const ItemDetailsPage: React.FC<ItemDetailsPageProps> = ({username, data, onClos
     };
 
     const handleSave = async () => {
-        let compressedImage = null;
-
-        if (image != null) {
-            const reader = new FileReader();
-
-            reader.readAsArrayBuffer(image);
-
-            reader.onloadend = () => {
-                const arrayBuffer = reader.result;
-                if (arrayBuffer instanceof ArrayBuffer) {
-                    const compressedData = deflate(arrayBuffer); // Compress the image data
-                    compressedImage = btoa(String.fromCharCode(...new Uint8Array(compressedData))); // Base64-encode the compressed data
-                }
-            };
-        }
+        // let compressedImage = null;
+        //
+        // if (image != null) {
+        //     const reader = new FileReader();
+        //
+        //     reader.readAsArrayBuffer(image);
+        //
+        //     reader.onloadend = () => {
+        //         const arrayBuffer = reader.result;
+        //         if (arrayBuffer instanceof ArrayBuffer) {
+        //             const compressedData = deflate(arrayBuffer); // Compress the image data
+        //             compressedImage = btoa(String.fromCharCode(...new Uint8Array(compressedData))); // Base64-encode the compressed data
+        //         }
+        //     };
+        // }
 
         const data = {
             id,
@@ -143,10 +145,9 @@ const ItemDetailsPage: React.FC<ItemDetailsPageProps> = ({username, data, onClos
             visualValue,
             endingValue,
             publicItem,
-            compressedImage
+            // compressedImage
         };
 
-        console.log(id, compressedImage)
 
         if (!title || !author || !year) {
             console.log('Title or author not set:');
@@ -321,12 +322,12 @@ const ItemDetailsPage: React.FC<ItemDetailsPageProps> = ({username, data, onClos
                         </div>
                     </div>
 
-                    {/*<img className="w-[15vw] rounded-xl mt-3 mb-3" alt="sdf" src={bookIcon}/>*/}
-                    <ImageUploader
-                        onImageChange={async (file) => {
-                            setImage(file);
-                        }}
-                    />
+                    <img className="w-[15vw] rounded-xl mt-3 mb-3" alt="sdf" src={bookIcon}/>
+                    {/*<ImageUploader*/}
+                    {/*    onImageChange={async (file) => {*/}
+                    {/*        setImage(file);*/}
+                    {/*    }}*/}
+                    {/*/>*/}
                 </div>
             </div>
 
