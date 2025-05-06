@@ -275,7 +275,8 @@ export default function Content() {
                             isOpen={true}
                             onClose={() => {
                                 closeItem();
-                                navigate('/content');
+                                // navigate('/content');
+                                window.location.reload();
                             }}
                         />
                     )}
