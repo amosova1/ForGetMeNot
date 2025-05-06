@@ -38,6 +38,11 @@ userItemsRouter.post('/', async function (req, res) {
         let item = await Item.findOne({where: {title: title, author: author}});
         console.log(item);
 
+        await item.update({
+            year : year,
+            type: selectedCategory
+        });
+
         if (!item) {
             item = await Item.create({title: title, author: author, year: year, type: selectedCategory});
             console.log('created item ', item);
