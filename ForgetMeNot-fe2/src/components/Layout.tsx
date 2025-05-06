@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { Login } from '../modal/login.tsx';
-import { Register } from '../modal/register.tsx';
+import React, {useEffect, useState} from "react";
+import {Login} from '../modal/login.tsx';
+import {Register} from '../modal/register.tsx';
 import {useNavigate} from "react-router-dom";
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function Layout({children}: { children: React.ReactNode }) {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [showLoginModal, setShowLoginModal] = useState(false);
     const [showRegisterModal, setShowRegisterModal] = useState(false);
@@ -26,37 +26,40 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     // }, []);
 
     useEffect(() => {
+        document.documentElement.classList.toggle("dark", isDarkMode);
+        localStorage.setItem("theme", isDarkMode ? "dark" : "light");
+    }, [isDarkMode]);
+
+    const handleSetUsername = () => {
+        let admin = false;
+
         fetch('/api/login', {
             credentials: 'include',
         })
             .then(res => res.json())
             .then(data => {
                 if (data.loggedIn) {
-                    handleSetUsername(data.username, data.isAdmin);
+                    admin = data.isAdmin;
+                    setUsername(data.username);
+                    setIsAdmin(data.isAdmin);
+                    setIsLoggedIn(true);
+
+                    if (admin) {
+                        navigate("/admin")
+                    } else {
+                        navigate("/content");
+                    }
                 }
             });
-    }, []);
-
-    useEffect(() => {
-        document.documentElement.classList.toggle("dark", isDarkMode);
-        localStorage.setItem("theme", isDarkMode ? "dark" : "light");
-    }, [isDarkMode]);
-
-    const handleSetUsername = (name: string, admin: boolean) => {
-        setUsername(name);
-        setIsAdmin(admin);
-        setIsLoggedIn(true);
-
-        if (admin) {
-            navigate("/admin")
-        } else {
-            navigate("/content");
-        }
     };
 
-    const handleLogout = () => {
-        fetch('/api/logout', {
-            method: 'POST',
+    useEffect(() => {
+        handleSetUsername();
+    }, []);
+
+    const handleLogout = async () => {
+        fetch('/api/login/logout', {
+            method: 'DELETE',
             credentials: 'include',
         }).then(() => {
             setIsLoggedIn(false);
@@ -98,9 +101,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                                 <span className="m-2">Ahoj {username}!</span>
                                 <button
                                     className="btn"
-                                    onClick={() => {
-                                        handleLogout()
-                                        navigate("/")
+                                    onClick={async () => {
+                                        await handleLogout();
+                                        navigate('/');
                                     }}
                                 >
                                     Odhlásenie
@@ -114,9 +117,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             {showLoginModal && (
                 <Login
                     isOpen={showLoginModal}
-                    onClose={() => setShowLoginModal(false)}
-                    setIsLoggedIn={setIsLoggedIn}
-                    setUsername={handleSetUsername}
+                    onClose={() => {
+                        setShowLoginModal(false);
+                        handleSetUsername()
+                    }}
                 />
             )}
 

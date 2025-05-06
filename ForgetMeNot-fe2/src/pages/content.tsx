@@ -2,6 +2,7 @@ import {useEffect, useState} from 'react';
 import {Item} from "../components/Item";
 import SearchBar from "../components/Searchbar";
 import {ItemDetails} from "../modal/itemDetails";
+import {useNavigate} from "react-router-dom";
 
 async function getSections() {
     try {
@@ -66,6 +67,24 @@ async function getItems(username: string) {
 }
 
 export default function Content() {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        fetch('/api/login', {
+            credentials: 'include',
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                console.log(data);
+                if (data.loggedIn && !data.isAdmin) {
+                    console.log('ok');
+                } else {
+                    navigate('/');
+                }
+            });
+    }, []);
+
+
     const [selectedItem, setSelectedItem] = useState<any | null>(null);
     const [sectionsList, setSectionsList] = useState<{ name: string; section_type: string }[]>([]);
     const [tagsList, setTagsList] = useState<string[]>([]);
@@ -82,19 +101,6 @@ export default function Content() {
             setSectionsList(data);
             setFilteredSections(data);
         });
-
-        // const savedUsername = localStorage.getItem('username');
-        // if (savedUsername) {
-        //     setUsername(savedUsername);
-        // }
-        // console.log(username, ' hej ', savedUsername);
-        //
-        // if (savedUsername != null) {
-        //     getItems(savedUsername).then((data) => {
-        //         setUserItems(data.items);
-        //         setFilteredItems(data.items);
-        //     });
-        // }
 
         getTags().then((data) => {
             setTagsList(data);

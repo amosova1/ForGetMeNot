@@ -10,32 +10,29 @@ loginRouter.post('/', async function (req, res) {
   if (!username || !password) {
     return res.status(400).send('Username and password are required');
   }
-  console.log('abbbbb', username, password)
   try {
     const account = await Account.findOne({ where: { username } });
 
     if (!account) {
       return res.status(401).send('Invalid username or password');
     }
-    console.log('sdfsdf')
     const match = await compare(password, account.password);
 
     if (!match) {
       return res.status(401).send('Invalid username or password');
     }
 
-    console.log('here')
     req.session.user = {
       username: username,
+      accountId: account.account_id,
       isAdmin: account.is_admin,
     };
 
-    console.log('here2')
     res.status(200).json({
       message: 'Login successful',
-      accountId: account.id,
+      accountId: account.account_id,
       name: username,
-      admin: account.is_admin,
+      isAdmin: account.is_admin,
     });
 
   } catch (error) {
@@ -53,19 +50,18 @@ loginRouter.get('/',  (req, res) => {
 });
 
 loginRouter.delete('/logout', (req, res) => {
-  if (req.session && req.session.userId) {
+  if (req.session && req.session.user && req.session.user.accountId) {
     req.session.destroy((err) => {
       if (err) {
-        console.log(err);
-        return res.status(500).end();  // internal server error
-      } else {
-        // clear the cookie in the browser
-        res.clearCookie(config.session.cookieName);
-        return res.status(200).end();  // successful logout
+        console.error('Error destroying session:', err);
+        return res.status(500).end();
       }
+
+      res.clearCookie('connect.sid');
+      return res.status(200).end();
     });
   } else {
-    return res.status(400).end();  // bad request - session doesn't exist
+    return res.status(400).json({ error: 'Not logged in' });
   }
 });
 

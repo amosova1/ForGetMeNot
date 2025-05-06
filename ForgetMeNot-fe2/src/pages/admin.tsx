@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react';
 import {Helmet} from 'react-helmet';
 import {Table} from '../components/Table';
+import {useNavigate} from "react-router-dom";
 
 async function getAccounts() {
     try {
@@ -86,6 +87,23 @@ async function getSections() {
 }
 
 export default function AdminPage() {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        fetch('/api/login', {
+            credentials: 'include',
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                console.log(data);
+                if (data.loggedIn && data.isAdmin) {
+                    console.log('ok');
+                } else {
+                    navigate("/");
+                }
+            });
+    }, []);
+
     const [accounts, setAccounts] = useState<any[]>([]);
     const [tags, setTags] = useState<any[]>([]);
     const [sections, setSections] = useState<any[]>([]);
@@ -200,6 +218,7 @@ export default function AdminPage() {
                 console.error('Unknown editing type:', type);
                 break;
         }
+        window.location.reload();
 
     };
 
@@ -362,7 +381,10 @@ export default function AdminPage() {
         Actions: (
             <span className='flex space-x-4'>
                 <button
-                    onClick={() => handleEdit(account, 'account')}
+                    onClick={() => {
+                        const { account_id, ...accountWithoutId } = account;
+                        handleEdit(accountWithoutId, 'account');
+                    }}
                     className={'px-4 py-2 bg-[var(--green)] text-white rounded-md hover:bg-[var(--green-hover)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-300'}
                 >
                     Edit
@@ -382,7 +404,10 @@ export default function AdminPage() {
         Actions: (
             <span className='flex space-x-4'>
                 <button
-                    onClick={() => handleEdit(tag, 'tag')}
+                    onClick={() => {
+                        const { tag_id, ...tagWithoutId } = tag;
+                        handleEdit(tagWithoutId, 'tag');
+                    }}
                     className={'px-4 py-2 bg-[var(--green)] text-white rounded-md hover:bg-[var(--green-hover)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-300'}
                 >
                     Edit
@@ -402,7 +427,10 @@ export default function AdminPage() {
         Actions: (
             <span className='flex space-x-4'>
                 <button
-                    onClick={() => handleEdit(section, 'section')}
+                    onClick={() => {
+                        const { section_id, ...sectionWithoutId } = section;
+                        handleEdit(sectionWithoutId, 'section');
+                    }}
                     className={'px-4 py-2 bg-[var(--green)] text-white rounded-md hover:bg-[var(--green-hover)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-300'}
                 >
                     Edit
@@ -422,7 +450,11 @@ export default function AdminPage() {
         Actions: (
             <span className='flex space-x-4'>
                 <button
-                    onClick={() => handleEdit(item, 'userItem')}
+                    onClick={() => {
+                        const { id, item_id, account_id, ...itemWithoutId } = item;
+                        console.log('itemmm', item, itemWithoutId)
+                        handleEdit(itemWithoutId, 'userItem');
+                    }}
                     className={'px-4 py-2 bg-[var(--green)] text-white rounded-md hover:bg-[var(--green-hover)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-300'}
                 >
                     Edit
@@ -442,7 +474,10 @@ export default function AdminPage() {
         Actions: (
             <span>
                 <button
-                    onClick={() => handleEdit(item, 'item')}
+                    onClick={() => {
+                        const { item_id, ...itemWithoutId } = item;
+                        handleEdit(itemWithoutId, 'item');
+                    }}
                     className={'px-4 py-2 bg-[var(--green)] text-white rounded-md hover:bg-[var(--green-hover)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-300'}
                 >
                     Edit
