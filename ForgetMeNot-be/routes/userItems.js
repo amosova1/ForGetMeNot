@@ -43,7 +43,7 @@ userItemsRouter.post('/', async function (req, res) {
             console.log('created item ', item);
         }
 
-        await item.update({
+        await item?.update({
             year : year,
             type: selectedCategory
         });
